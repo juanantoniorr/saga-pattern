@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @Data
 public class CreateProductRestModel {
     //Not null and not blank
-    @NotBlank(message = "Field is required")
+   // @NotBlank(message = "Field is required")
     private String title;
     @Min(value = 1, message = "Price cannot be lower than 1")
     private BigDecimal price;
