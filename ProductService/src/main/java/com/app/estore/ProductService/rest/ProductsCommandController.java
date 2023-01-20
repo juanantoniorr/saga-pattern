@@ -6,6 +6,7 @@ import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController
@@ -21,8 +22,8 @@ public class ProductsCommandController {
     }
 
     @PostMapping
-    //RequesatBody only mandatory fields in order to create product
-    public String createProduct(@RequestBody CreateProductRestModel product){
+    //RequestBody only mandatory fields in order to create product
+    public String createProduct(@Valid @RequestBody  CreateProductRestModel product){
       CreateProductCommand productCommand=  CreateProductCommand.builder().price(product.getPrice())
                 .quantity(product.getQuantity())
                 .title(product.getTitle())
