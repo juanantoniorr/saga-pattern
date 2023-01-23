@@ -3,11 +3,13 @@ package com.app.estore.ProductService.query;
 import com.app.estore.ProductService.entity.ProductEntity;
 import com.app.estore.ProductService.event.ProductCreatedEvent;
 import com.app.estore.ProductService.repo.ProductRepository;
+import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
 @Component
+@ProcessingGroup("product-group") //same group for events handlers
 public class ProductsEventHandler {
     //Injected by constructor
     private final ProductRepository productRepository;
