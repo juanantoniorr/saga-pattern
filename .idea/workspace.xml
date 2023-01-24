@@ -7,8 +7,7 @@
     <list default="true" id="1d007a41-b1a2-40d0-8948-2c4cbbcbe76c" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ProductService/src/main/java/com/app/estore/ProductService/command/interceptors/CreateProductCommandInterceptor.java" beforeDir="false" afterPath="$PROJECT_DIR$/ProductService/src/main/java/com/app/estore/ProductService/command/interceptors/CreateProductCommandInterceptor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProductService/src/main/java/com/app/estore/ProductService/query/ProductsEventHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/ProductService/src/main/java/com/app/estore/ProductService/query/ProductsEventHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProductService/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ProductService/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProductService/src/main/java/com/app/estore/ProductService/rest/ProductsCommandController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ProductService/src/main/java/com/app/estore/ProductService/rest/ProductsCommandController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -125,8 +124,8 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/ProductService/src/main/java/com/app/estore/ProductService/command/interceptors/CreateProductCommandInterceptor.java</url>
-          <line>31</line>
-          <option name="timeStamp" value="1" />
+          <line>40</line>
+          <option name="timeStamp" value="8" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

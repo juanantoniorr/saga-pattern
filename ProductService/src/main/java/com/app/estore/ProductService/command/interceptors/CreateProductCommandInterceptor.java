@@ -39,6 +39,7 @@ public class CreateProductCommandInterceptor implements MessageDispatchIntercept
                 //Validate id and title in the lookup table
                Optional<ProductLookupEntity> productLookupEntity = productLookupRepository.findByProductIdOrTitle(createProductCommand.getProductId(), createProductCommand.getTitle());
                 if (productLookupEntity.isPresent()){
+                    //After throwing exception ProductServiceErrorHandling class will be called
                 throw new IllegalArgumentException("Title or Id already in the database");
                 }
             }

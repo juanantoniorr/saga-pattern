@@ -31,13 +31,7 @@ public class ProductsCommandController {
                 .build();
 
       //send command object to gateway and wait for response
-        String callback;
-        try {
-            callback = commandGateway.sendAndWait(productCommand);
-        } catch (Exception exception){
-            callback = exception.getLocalizedMessage();
-        }
-
+        String callback = commandGateway.sendAndWait(productCommand);;
 
         return callback;
     }
