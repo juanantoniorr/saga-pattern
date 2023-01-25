@@ -31,7 +31,7 @@ public class ProductsCommandController {
                 .build();
 
       //send command object to gateway and wait for response
-        String callback = commandGateway.sendAndWait(productCommand);;
+        String callback = commandGateway.sendAndWait(productCommand);
 
         return callback;
     }
