@@ -32,6 +32,7 @@ public class ProductAggregate {
 
         //Publish event to all eventHandlers (on-> bottom method)
         AggregateLifecycle.apply(productCreatedEvent);
+        //if exception happens here all transaction will rollback cause apply() method above does not execute immediately
     }
 
     ///Only update the aggregate state

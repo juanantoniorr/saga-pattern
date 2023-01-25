@@ -1,6 +1,5 @@
-package com.app.estore.ProductService.rest.errorhandling;
+package com.app.estore.ProductService.errorhandling;
 
-import com.app.estore.ProductService.entity.ProductLookupEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

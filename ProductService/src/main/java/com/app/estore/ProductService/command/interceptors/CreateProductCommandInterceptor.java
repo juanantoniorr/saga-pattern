@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
 
+//This interceptor class is triggered at the beginning of every request of creation
 @Component
 @Log
 public class CreateProductCommandInterceptor implements MessageDispatchInterceptor<CommandMessage<?>> {

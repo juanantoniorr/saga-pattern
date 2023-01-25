@@ -1,4 +1,4 @@
-package com.app.estore.ProductService.rest.errorhandling;
+package com.app.estore.ProductService.errorhandling;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

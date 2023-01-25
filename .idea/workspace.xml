@@ -5,9 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1d007a41-b1a2-40d0-8948-2c4cbbcbe76c" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/ProductService/src/main/java/com/app/estore/ProductService/errorhandling/ProductServiceEventErrorHandling.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProductService/src/main/java/com/app/estore/ProductService/ProductServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/ProductService/src/main/java/com/app/estore/ProductService/ProductServiceApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProductService/src/main/java/com/app/estore/ProductService/command/ProductAggregate.java" beforeDir="false" afterPath="$PROJECT_DIR$/ProductService/src/main/java/com/app/estore/ProductService/command/ProductAggregate.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ProductService/src/main/java/com/app/estore/ProductService/command/interceptors/CreateProductCommandInterceptor.java" beforeDir="false" afterPath="$PROJECT_DIR$/ProductService/src/main/java/com/app/estore/ProductService/command/interceptors/CreateProductCommandInterceptor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProductService/src/main/java/com/app/estore/ProductService/rest/ProductsCommandController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ProductService/src/main/java/com/app/estore/ProductService/rest/ProductsCommandController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProductService/src/main/java/com/app/estore/ProductService/query/ProductsEventHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/ProductService/src/main/java/com/app/estore/ProductService/query/ProductsEventHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProductService/src/main/java/com/app/estore/ProductService/rest/errorhandling/ProductError.java" beforeDir="false" afterPath="$PROJECT_DIR$/ProductService/src/main/java/com/app/estore/ProductService/errorhandling/ProductError.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProductService/src/main/java/com/app/estore/ProductService/rest/errorhandling/ProductServiceErrorHandling.java" beforeDir="false" afterPath="$PROJECT_DIR$/ProductService/src/main/java/com/app/estore/ProductService/errorhandling/ProductServiceErrorHandling.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -123,9 +128,9 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/ProductService/src/main/java/com/app/estore/ProductService/command/interceptors/CreateProductCommandInterceptor.java</url>
-          <line>40</line>
-          <option name="timeStamp" value="8" />
+          <url>file://$PROJECT_DIR$/ProductService/src/main/java/com/app/estore/ProductService/query/ProductsEventHandler.java</url>
+          <line>39</line>
+          <option name="timeStamp" value="14" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
