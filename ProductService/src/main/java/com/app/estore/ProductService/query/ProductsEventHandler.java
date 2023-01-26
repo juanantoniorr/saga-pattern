@@ -3,12 +3,15 @@ package com.app.estore.ProductService.query;
 import com.app.estore.ProductService.entity.ProductEntity;
 import com.app.estore.ProductService.event.ProductCreatedEvent;
 import com.app.estore.ProductService.repo.ProductRepository;
+import com.estore.core.events.ProductReservedEvent;
+import lombok.extern.java.Log;
 import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.messaging.interceptors.ExceptionHandler;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
+@Log
 @Component
 @ProcessingGroup("product-group") //same group for events handlers
 public class ProductsEventHandler {
@@ -39,5 +42,17 @@ public class ProductsEventHandler {
         //calls this method: handleException in this class
         //Forcing exception to see transaction behaviour, if error nothing is persisted
        //if (true){throw new Exception("Forced exception in event to rollback");}
+    }
+
+    //New event handler for Product reserved event
+    @EventHandler
+    public void on (ProductReservedEvent productReservedEvent){
+       ProductEntity product = productRepository.findByProductId(productReservedEvent.getProductId());
+       if (product.getQuantity()<productReservedEvent.getQuantity()){
+           throw new IllegalArgumentException("Not enough product in stock");
+       }
+       product.setQuantity(product.getQuantity() - productReservedEvent.getQuantity());
+       productRepository.save(product);
+       log.info("Product reserved event was called ");
     }
 }
