@@ -8,6 +8,8 @@ Project Structure
 - Eureka server : http://localhost:8761/
 - Gateway: http://localhost:8082/
 - Product Microservice api rest: /api/products
+- Order Microservice api rest: /api/orders
+-core: project that is a dependency on orders and products microservices
 
 Request sample -> POST: localhost:8082/products-service/api/products
 BODY: {
@@ -20,3 +22,8 @@ BODY: {
 - RUN EUREKA SERVER
 - RUN GATEWAY
 - RUN PRODUCTS MICROSERVICE
+- RUN ORDERS MICROSERVICE
+
+#NOTES
+-SAGA CLASS IS IN ORDERS MICROSERVICE
+
