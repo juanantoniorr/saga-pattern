@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="api-gateway" />
+        <module name="core" />
         <module name="discovery-server" />
         <module name="OrderService" />
         <module name="ProductService" />
@@ -15,6 +16,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="api-gateway" target="17" />
+      <module name="core" target="17" />
       <module name="discovery-server" target="17" />
       <module name="OrderService" target="17" />
       <module name="ProductService" target="17" />
@@ -25,6 +27,7 @@
       <module name="OrderService" options="-parameters" />
       <module name="ProductService" options="-parameters" />
       <module name="api-gateway" options="-parameters" />
+      <module name="core" options="-parameters" />
       <module name="discovery-server" options="-parameters" />
     </option>
   </component>
