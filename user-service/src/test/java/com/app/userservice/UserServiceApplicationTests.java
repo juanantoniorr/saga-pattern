@@ -1,13 +1,13 @@
-package com.app.estore.OrderService;
+package com.app.userservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class OrderServiceApplicationTests {
-	@Test
-	public void test(){
+class UserServiceApplicationTests {
 
+	@Test
+	void contextLoads() {
 	}
 
 }

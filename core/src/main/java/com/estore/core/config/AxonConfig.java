@@ -9,7 +9,7 @@ public class AxonConfig {
     @Bean
     public XStream xStream(){
         XStream xStream = new XStream();
-        xStream.allowTypesByWildcard(new String[] {"com.app.estore.**", "com.estore.core.**"});
+        xStream.allowTypesByWildcard(new String[] {"com.app.estore.**", "com.estore.core.**", "com.app.userservice.**"});
         return xStream;
     }
 }
