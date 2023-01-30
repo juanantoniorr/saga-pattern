@@ -10,8 +10,9 @@
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OrderService/src/main/java/com/app/estore/OrderService/command/OrderAggregate.java" beforeDir="false" afterPath="$PROJECT_DIR$/OrderService/src/main/java/com/app/estore/OrderService/command/OrderAggregate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OrderService/src/main/java/com/app/estore/OrderService/query/OrderEventsHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/OrderService/src/main/java/com/app/estore/OrderService/query/OrderEventsHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OrderService/src/main/java/com/app/estore/OrderService/saga/OrderSaga.java" beforeDir="false" afterPath="$PROJECT_DIR$/OrderService/src/main/java/com/app/estore/OrderService/saga/OrderSaga.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OrderService/src/test/java/com/app/estore/OrderService/OrderServiceApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/OrderService/src/test/java/com/app/estore/OrderService/OrderServiceApplicationTests.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/src/main/java/com/estore/core/config/AxonConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/src/main/java/com/estore/core/config/AxonConfig.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -61,10 +62,10 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="jdk.selected.JAVA_MODULE" value="17" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/user-service" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/payment-service" />
     <property name="settings.editor.selected.configurable" value="MavenSettings" />
   </component>
-  <component name="RunManager" selected="Application.UserServiceApplication">
+  <component name="RunManager" selected="Application.PaymentServiceApplication">
     <configuration name="ApiGatewayApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.app.estore.apigateway.ApiGatewayApplication" />
       <module name="api-gateway" />
@@ -78,12 +79,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="DiscoveryServerApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.app.estore.DiscoveryServerApplication" />
-      <module name="discovery-server" />
+    <configuration name="OrderServiceApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.app.estore.OrderService.OrderServiceApplication" />
+      <module name="OrderService" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.app.estore.*" />
+          <option name="PATTERN" value="com.app.estore.OrderService.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -91,12 +92,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="OrderServiceApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.app.estore.OrderService.OrderServiceApplication" />
-      <module name="OrderService" />
+    <configuration name="PaymentServiceApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.estore.paymentservice.PaymentServiceApplication" />
+      <module name="payment-service" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.app.estore.OrderService.*" />
+          <option name="PATTERN" value="com.estore.paymentservice.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -132,11 +133,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.PaymentServiceApplication" />
         <item itemvalue="Application.UserServiceApplication" />
-        <item itemvalue="Application.ProductServiceApplication" />
         <item itemvalue="Application.OrderServiceApplication" />
+        <item itemvalue="Application.ProductServiceApplication" />
         <item itemvalue="Application.ApiGatewayApplication" />
-        <item itemvalue="Application.DiscoveryServerApplication" />
       </list>
     </recent_temporary>
   </component>
@@ -166,9 +167,9 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/ProductService/src/main/java/com/app/estore/ProductService/query/ProductsEventHandler.java</url>
-          <line>49</line>
-          <option name="timeStamp" value="18" />
+          <url>file://$PROJECT_DIR$/payment-service/src/main/java/com/estore/paymentservice/event/PaymentEventsHandler.java</url>
+          <line>19</line>
+          <option name="timeStamp" value="23" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

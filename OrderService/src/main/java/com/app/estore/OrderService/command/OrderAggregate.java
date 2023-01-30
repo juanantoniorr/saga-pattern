@@ -1,9 +1,11 @@
 package com.app.estore.OrderService.command;
 
 import com.app.estore.OrderService.constants.OrderStatus;
+import com.app.estore.OrderService.event.OrderApprovedEvent;
 import com.app.estore.OrderService.event.OrderCreatedEvent;
 import lombok.NoArgsConstructor;
 import org.axonframework.commandhandling.CommandHandler;
+import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.AggregateLifecycle;
@@ -37,6 +39,19 @@ public class OrderAggregate {
         this.quantity = orderCreatedEvent.getQuantity();
         this.addressId = orderCreatedEvent.getAddressId();
         this.orderStatus = orderCreatedEvent.getOrderStatus();
-
     }
+
+    //Handle approved order command from OrderSaga class
+    @CommandHandler
+    public void handle(ApprovedOrderCommand approvedOrderCommand){
+        OrderApprovedEvent orderApprovedEvent = new OrderApprovedEvent(approvedOrderCommand.getOrderId());
+        //Schedule event
+        AggregateLifecycle.apply(orderApprovedEvent);
+    }
+
+    @EventSourcingHandler
+    protected void on(OrderApprovedEvent orderApprovedEvent){
+        this.orderStatus = orderApprovedEvent.getOrderStatus();
+    }
+
 }
