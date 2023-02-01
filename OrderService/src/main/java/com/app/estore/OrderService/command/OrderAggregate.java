@@ -3,6 +3,7 @@ package com.app.estore.OrderService.command;
 import com.app.estore.OrderService.constants.OrderStatus;
 import com.app.estore.OrderService.event.OrderApprovedEvent;
 import com.app.estore.OrderService.event.OrderCreatedEvent;
+import com.app.estore.OrderService.event.OrderRejectedEvent;
 import lombok.NoArgsConstructor;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventhandling.EventHandler;
@@ -15,7 +16,7 @@ import org.springframework.beans.BeanUtils;
 @Aggregate
 @NoArgsConstructor
 public class OrderAggregate {
-    @AggregateIdentifier //toDo
+    @AggregateIdentifier
     private String orderId;
     private String userId;
     private String productId;
@@ -49,9 +50,21 @@ public class OrderAggregate {
         AggregateLifecycle.apply(orderApprovedEvent);
     }
 
+    @CommandHandler
+    public void handle (RejectOrderCommand rejectOrderCommand){
+        OrderRejectedEvent orderRejectedEvent = new OrderRejectedEvent(rejectOrderCommand.getOrderId(),rejectOrderCommand.getReason());
+        AggregateLifecycle.apply(orderRejectedEvent);
+    }
+
     @EventSourcingHandler
     protected void on(OrderApprovedEvent orderApprovedEvent){
         this.orderStatus = orderApprovedEvent.getOrderStatus();
+    }
+
+    @EventSourcingHandler
+    public void on (OrderRejectedEvent orderRejectedEvent){
+        this.orderStatus = orderRejectedEvent.getOrderStatus();
+        //after this eventhandler will handle the event in package query
     }
 
 }

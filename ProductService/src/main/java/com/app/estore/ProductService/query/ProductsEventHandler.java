@@ -3,6 +3,7 @@ package com.app.estore.ProductService.query;
 import com.app.estore.ProductService.entity.ProductEntity;
 import com.app.estore.ProductService.event.ProductCreatedEvent;
 import com.app.estore.ProductService.repo.ProductRepository;
+import com.estore.core.events.ProductReservationCancelledEvent;
 import com.estore.core.events.ProductReservedEvent;
 import lombok.extern.java.Log;
 import org.axonframework.config.ProcessingGroup;
@@ -48,11 +49,24 @@ public class ProductsEventHandler {
     @EventHandler
     public void on (ProductReservedEvent productReservedEvent){
        ProductEntity product = productRepository.findByProductId(productReservedEvent.getProductId());
+       log.info("Current quantity " + productReservedEvent.getQuantity());
        if (product.getQuantity()<productReservedEvent.getQuantity()){
            throw new IllegalArgumentException("Not enough product in stock");
        }
        product.setQuantity(product.getQuantity() - productReservedEvent.getQuantity());
+        log.info("New quantity " + product.getQuantity());
        productRepository.save(product);
        log.info("Product reserved event was called ");
+    }
+
+    @EventHandler
+    //ToDo Event is called twice when rolling back
+    public void on (ProductReservationCancelledEvent productReservationCancelledEvent){
+    ProductEntity product = productRepository.findByProductId(productReservationCancelledEvent.getProductId());
+    log.info("Product reservation cancelled event: quantity " + productReservationCancelledEvent.getQuantity());
+    int newQuantity = product.getQuantity() + productReservationCancelledEvent.getQuantity();
+    product.setQuantity(newQuantity);
+        log.info("Product reservation cancelled event: rolled back: new quantity " + product.getQuantity());
+    productRepository.save(product);
     }
 }

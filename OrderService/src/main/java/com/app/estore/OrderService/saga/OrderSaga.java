@@ -1,12 +1,16 @@
 package com.app.estore.OrderService.saga;
 
 import com.app.estore.OrderService.command.ApprovedOrderCommand;
+import com.app.estore.OrderService.command.RejectOrderCommand;
 import com.app.estore.OrderService.event.OrderApprovedEvent;
 import com.app.estore.OrderService.event.OrderCreatedEvent;
+import com.app.estore.OrderService.event.OrderRejectedEvent;
+import com.estore.core.commands.CancelProductReservationCommand;
 import com.estore.core.commands.ProcessPaymentCommand;
 import com.estore.core.commands.ReserveProductCommand;
 import com.estore.core.details.User;
 import com.estore.core.events.PaymentProcessedEvent;
+import com.estore.core.events.ProductReservationCancelledEvent;
 import com.estore.core.events.ProductReservedEvent;
 import com.estore.core.query.FetchUserPaymentDetailQuery;
 import lombok.extern.java.Log;
@@ -14,6 +18,7 @@ import lombok.extern.log4j.Log4j;
 import org.axonframework.commandhandling.CommandCallback;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.messaging.responsetypes.ResponseTypes;
+import org.axonframework.modelling.saga.EndSaga;
 import org.axonframework.modelling.saga.SagaEventHandler;
 import org.axonframework.modelling.saga.SagaLifecycle;
 import org.axonframework.modelling.saga.StartSaga;
@@ -67,10 +72,12 @@ public class OrderSaga {
         } catch (Exception exception){
             log.info(exception.getMessage());
             //Start compensating transaction
+            cancelProductReservation(productReservedEvent,exception.getMessage());
             return;
         }
         if (user==null){
             //Start compensating transaction
+            cancelProductReservation(productReservedEvent,"Could not fetch user details");
             return;}
         log.info("Successfully fetched user payment details for user " + user.getUserId());
         //Empieza proceso de pago (Comando)
@@ -85,11 +92,29 @@ public class OrderSaga {
             response = commandGateway.sendAndWait(processPaymentCommand,30, TimeUnit.SECONDS);
         } catch (Exception exception){
             //Start compensating transaction
+            cancelProductReservation(productReservedEvent,exception.getMessage());
         }
         if (response==null){
             log.info("The comand result was null");
             //Starting compensating transaction
+            cancelProductReservation(productReservedEvent,"The comand result was null");
         }
+
+
+    }
+
+    private void cancelProductReservation(ProductReservedEvent event, String reason){
+
+        CancelProductReservationCommand cancelProductReservationCommand =
+                CancelProductReservationCommand.builder()
+                        .productId(event.getProductId())
+                        .quantity(event.getQuantity())
+                        .orderId(event.getOrderId())
+                        .reason(reason)
+                        .userId(event.getUserId())
+                        .build();
+
+        commandGateway.send(cancelProductReservationCommand);
 
 
     }
@@ -107,7 +132,18 @@ public class OrderSaga {
     @SagaEventHandler(associationProperty = "orderId")
     public void handle (OrderApprovedEvent orderApprovedEvent){
         log.info("Order Approved, Saga completed for id " + orderApprovedEvent.getOrderId());
-        SagaLifecycle.end();
 
+    }
+
+    @EndSaga
+    @SagaEventHandler(associationProperty = "orderId")
+    public void handle(OrderRejectedEvent orderRejectedEvent){
+        log.info("Order succesfully cancelled ");
+    }
+
+    @SagaEventHandler(associationProperty = "orderId")
+    public void handle(ProductReservationCancelledEvent productReservationCancelledEvent){
+        RejectOrderCommand rejectOrderCommand = new RejectOrderCommand(productReservationCancelledEvent.getOrderId(),productReservationCancelledEvent.getReason());
+        commandGateway.send(rejectOrderCommand);
     }
 }

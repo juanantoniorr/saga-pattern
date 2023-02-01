@@ -1,7 +1,9 @@
 package com.app.estore.ProductService.command;
 
 import com.app.estore.ProductService.event.ProductCreatedEvent;
+import com.estore.core.commands.CancelProductReservationCommand;
 import com.estore.core.commands.ReserveProductCommand;
+import com.estore.core.events.ProductReservationCancelledEvent;
 import com.estore.core.events.ProductReservedEvent;
 import lombok.NoArgsConstructor;
 import org.axonframework.commandhandling.CommandHandler;
@@ -67,6 +69,26 @@ public class ProductAggregate {
     public void on (ProductReservedEvent productReservedEvent){
         //just substract the quantity to be up to date all other fields are the same
         this.quantity-= productReservedEvent.getQuantity();
+    }
+
+    @CommandHandler
+    public void handle(CancelProductReservationCommand cancelProductReservationCommand){
+        ProductReservationCancelledEvent productReservationCancelledEvent = ProductReservationCancelledEvent
+                .builder()
+                .productId(cancelProductReservationCommand.getProductId())
+                .orderId(cancelProductReservationCommand.getOrderId())
+                .userId(cancelProductReservationCommand.getUserId())
+                .reason(cancelProductReservationCommand.getReason())
+                .quantity(cancelProductReservationCommand.getQuantity())
+                .build();
+
+        AggregateLifecycle.apply(productReservationCancelledEvent);
+
+    }
+
+   @EventSourcingHandler
+    public void on (ProductReservationCancelledEvent productReservationCancelledEvent){
+        this.quantity+= productReservationCancelledEvent.getQuantity();
     }
 
 }
