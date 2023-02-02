@@ -17,6 +17,8 @@ import lombok.extern.java.Log;
 import lombok.extern.log4j.Log4j;
 import org.axonframework.commandhandling.CommandCallback;
 import org.axonframework.commandhandling.gateway.CommandGateway;
+import org.axonframework.deadline.DeadlineManager;
+import org.axonframework.deadline.annotation.DeadlineHandler;
 import org.axonframework.messaging.responsetypes.ResponseTypes;
 import org.axonframework.modelling.saga.EndSaga;
 import org.axonframework.modelling.saga.SagaEventHandler;
@@ -26,6 +28,8 @@ import org.axonframework.queryhandling.QueryGateway;
 import org.axonframework.spring.stereotype.Saga;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
@@ -39,6 +43,13 @@ public class OrderSaga {
 
     @Autowired
     private transient QueryGateway queryGateway;
+
+    @Autowired
+    public transient DeadlineManager deadlineManager;
+
+    private static final String DEADLINE_PAYMENT_NAME = "productReservedDeadline";
+
+    private String scheduleId;
 
     //first we create the order
     //then we reserve the quantity (products microservice)
@@ -80,6 +91,11 @@ public class OrderSaga {
             cancelProductReservation(productReservedEvent,"Could not fetch user details");
             return;}
         log.info("Successfully fetched user payment details for user " + user.getUserId());
+
+        //We can set 10 seconds in order to test the deadline and uncomment line 98
+        scheduleId = deadlineManager.schedule(Duration.of(120, ChronoUnit.SECONDS), DEADLINE_PAYMENT_NAME, productReservedEvent);
+        //forcing deadline to show up
+       // if (true){return;}
         //Empieza proceso de pago (Comando)
         ProcessPaymentCommand processPaymentCommand = ProcessPaymentCommand.builder()
                 .paymentId(UUID.randomUUID().toString())
@@ -89,7 +105,7 @@ public class OrderSaga {
         String response = null;
         try {
             //Envia comando y espera resultado
-            response = commandGateway.sendAndWait(processPaymentCommand,30, TimeUnit.SECONDS);
+            response = commandGateway.sendAndWait(processPaymentCommand);
         } catch (Exception exception){
             //Start compensating transaction
             cancelProductReservation(productReservedEvent,exception.getMessage());
@@ -104,6 +120,7 @@ public class OrderSaga {
     }
 
     private void cancelProductReservation(ProductReservedEvent event, String reason){
+        cancelDeadline(DEADLINE_PAYMENT_NAME);
 
         CancelProductReservationCommand cancelProductReservationCommand =
                 CancelProductReservationCommand.builder()
@@ -122,7 +139,8 @@ public class OrderSaga {
     @SagaEventHandler(associationProperty = "orderId")
     public void handle(PaymentProcessedEvent paymentProcessedEvent){
         log.info("Approving order");
-
+        //if payment is success we need to cancel the deadline
+        cancelDeadline(DEADLINE_PAYMENT_NAME);
         //Send an approved command
         ApprovedOrderCommand approvedOrderCommand = new ApprovedOrderCommand(paymentProcessedEvent.getOrderId());
         //Send to new command handler in order aggregate class
@@ -145,5 +163,20 @@ public class OrderSaga {
     public void handle(ProductReservationCancelledEvent productReservationCancelledEvent){
         RejectOrderCommand rejectOrderCommand = new RejectOrderCommand(productReservationCancelledEvent.getOrderId(),productReservationCancelledEvent.getReason());
         commandGateway.send(rejectOrderCommand);
+    }
+
+    //Deadline handler method
+    @DeadlineHandler(deadlineName = DEADLINE_PAYMENT_NAME)
+    public void handlePaymentDeadline(ProductReservedEvent productReservedEvent){
+        log.info("Deadline triggered");
+        cancelProductReservation(productReservedEvent, "Payment timeout");
+
+    }
+
+    private void cancelDeadline(String deadlineName){
+        if (scheduleId!=null){
+            deadlineManager.cancelSchedule(deadlineName,scheduleId);
+            scheduleId = null;
+        }
     }
 }
