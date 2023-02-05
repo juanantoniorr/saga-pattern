@@ -11,18 +11,28 @@ Project Structure
 - Order Microservice api rest: /api/orders
 -core: project that is a dependency on orders and products microservices
 
-Request sample -> POST: localhost:8082/products-service/api/products
+1 Request sample -> POST: localhost:8082/products-service/api/products
 BODY: {
     "title": "test2",
     "price":"20",
     "quantity": "40"
 }
+2 --Return orderId
+2.1 ///Request to order a product: localhost:8082/orders-service/api/orders
+{
+"productId":"idFromFirstRequest",
+"quantity":1,
+"addressId":"afbb5881-a872-4d13-993c-faeb8350eea4"
+}
+
 #SETUP
 - MAKE SURE AXON SERVER AND MYSQL INSTANCES ARE RUNNING
 - RUN EUREKA SERVER
 - RUN GATEWAY
 - RUN PRODUCTS MICROSERVICE
 - RUN ORDERS MICROSERVICE
+- RUN PAYMENT SERVICE
+- RUN USER-DETAILS SERVICE
 
 #NOTES
 -SAGA CLASS IS IN ORDERS MICROSERVICE
