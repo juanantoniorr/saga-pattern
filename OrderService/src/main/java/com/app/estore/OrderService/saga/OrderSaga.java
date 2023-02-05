@@ -2,9 +2,11 @@ package com.app.estore.OrderService.saga;
 
 import com.app.estore.OrderService.command.ApprovedOrderCommand;
 import com.app.estore.OrderService.command.RejectOrderCommand;
+import com.app.estore.OrderService.dto.OrderSummaryDTO;
 import com.app.estore.OrderService.event.OrderApprovedEvent;
 import com.app.estore.OrderService.event.OrderCreatedEvent;
 import com.app.estore.OrderService.event.OrderRejectedEvent;
+import com.app.estore.OrderService.query.FindOrderQuery;
 import com.estore.core.commands.CancelProductReservationCommand;
 import com.estore.core.commands.ProcessPaymentCommand;
 import com.estore.core.commands.ReserveProductCommand;
@@ -25,6 +27,7 @@ import org.axonframework.modelling.saga.SagaEventHandler;
 import org.axonframework.modelling.saga.SagaLifecycle;
 import org.axonframework.modelling.saga.StartSaga;
 import org.axonframework.queryhandling.QueryGateway;
+import org.axonframework.queryhandling.QueryUpdateEmitter;
 import org.axonframework.spring.stereotype.Saga;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -47,6 +50,10 @@ public class OrderSaga {
     @Autowired
     public transient DeadlineManager deadlineManager;
 
+    //Inform to queries subscriptors about errors and updates.
+    @Autowired
+    public transient QueryUpdateEmitter queryUpdateEmitter;
+
     private static final String DEADLINE_PAYMENT_NAME = "productReservedDeadline";
 
     private String scheduleId;
@@ -67,6 +74,9 @@ public class OrderSaga {
         CommandCallback<ReserveProductCommand, Object> callback = (commandMessage,resultMessage) -> {
             if (resultMessage.isExceptional()){
                 log.info(resultMessage.exceptionResult().getMessage());
+                RejectOrderCommand rejectOrderCommand = new RejectOrderCommand(orderCreatedEvent.getOrderId(),resultMessage.exceptionResult().getMessage());
+                commandGateway.send(rejectOrderCommand);
+
             }
         };
         commandGateway.send(reserveProductCommand,callback);
@@ -150,13 +160,19 @@ public class OrderSaga {
     @SagaEventHandler(associationProperty = "orderId")
     public void handle (OrderApprovedEvent orderApprovedEvent){
         log.info("Order Approved, Saga completed for id " + orderApprovedEvent.getOrderId());
+        //Emmiting update that the order was completed
+        queryUpdateEmitter.emit(FindOrderQuery.class,query -> true, new OrderSummaryDTO(orderApprovedEvent.getOrderId(), orderApprovedEvent.getOrderStatus(), "Order completed"));
 
     }
 
     @EndSaga
     @SagaEventHandler(associationProperty = "orderId")
     public void handle(OrderRejectedEvent orderRejectedEvent){
+
         log.info("Order succesfully cancelled ");
+        //Emmiting update that the order was rejected
+        queryUpdateEmitter.emit(FindOrderQuery.class,query -> true, new OrderSummaryDTO(orderRejectedEvent.getOrderId(), orderRejectedEvent.getOrderStatus(), orderRejectedEvent.getReason()));
+
     }
 
     @SagaEventHandler(associationProperty = "orderId")
