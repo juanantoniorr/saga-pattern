@@ -8,6 +8,7 @@ import com.estore.core.events.ProductReservedEvent;
 import lombok.extern.java.Log;
 import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
+import org.axonframework.eventhandling.ResetHandler;
 import org.axonframework.messaging.interceptors.ExceptionHandler;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
@@ -60,7 +61,6 @@ public class ProductsEventHandler {
     }
 
     @EventHandler
-    //ToDo Event is called twice when rolling back
     public void on (ProductReservationCancelledEvent productReservationCancelledEvent){
     ProductEntity product = productRepository.findByProductId(productReservationCancelledEvent.getProductId());
     log.info("Product reservation cancelled event: quantity " + productReservationCancelledEvent.getQuantity());
@@ -68,5 +68,10 @@ public class ProductsEventHandler {
     product.setQuantity(newQuantity);
         log.info("Product reservation cancelled event: rolled back: new quantity " + product.getQuantity());
     productRepository.save(product);
+    }
+
+    @ResetHandler
+    public void reset(){
+        productRepository.deleteAll();
     }
 }
